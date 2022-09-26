@@ -7,13 +7,18 @@ import java.time.format.ResolverStyle;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.free.demo.dto.PersonalIdentity;
+
+@Service
 public class SSNValidateService {
 
     private static String COUNTRY_CODE = "FI";
 
-    public boolean validateSSN(String ssn, String countryCode) {
-        if (checkInput(ssn, countryCode)) {
-            return validate(ssn);
+    public boolean validateSSN(PersonalIdentity personalIdentity) {
+        if (checkInput(personalIdentity.getSsn(), personalIdentity.getCountryCode())) {
+            return validate(personalIdentity.getSsn());
         }
         return false;
     }

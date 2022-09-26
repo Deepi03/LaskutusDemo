@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import com.free.demo.dto.PersonalIdentity;
+
 public class SSNValidateServiceTest {
     private static String VALID_SSN = "131052-308T";
     private static String INVALID_SSN = "131059-309T";
@@ -15,9 +17,9 @@ public class SSNValidateServiceTest {
 
     @Test
     public void testValidateSSN() {
-        assertEquals(false, service.validateSSN(VALID_SSN, INVALID_COUNTRY));
-        assertEquals(true, service.validateSSN(VALID_SSN, VALID_COUNTRY));
-        assertEquals(false, service.validateSSN(INVALID_SSN, INVALID_COUNTRY));
+        assertEquals(false, service.validateSSN(new PersonalIdentity(VALID_SSN, INVALID_COUNTRY)));
+        assertEquals(true, service.validateSSN(new PersonalIdentity(VALID_SSN, VALID_COUNTRY)));
+        assertEquals(false, service.validateSSN(new PersonalIdentity(INVALID_SSN, INVALID_COUNTRY)));
     }
 
     @Test
@@ -34,20 +36,23 @@ public class SSNValidateServiceTest {
         assertEquals(true, service.validate(VALID_SSN));
     }
 
-    // @Test
-    public void testVlaidateDate() {
-        assertEquals(true, service.validateDate("04-09-92"));
+    @Test
+    public void testValidateDate() {
+        assertEquals(true, service.validateDate("13-10-52"));
+        assertEquals(false, service.validateDate("13-14-52"));
+        assertEquals(false, service.validateDate("31-02-52"));
 
     }
 
-    // @Test
+    @Test
     public void testValidateIndividualInput() {
         assertEquals(true, service.validateIndividualNumber("002"));
         assertEquals(false, service.validateIndividualNumber("900"));
     }
 
-    // @Test
+    @Test
     public void testValidateControllCharacter() {
-        assertEquals(true, service.validateControlCharacter("040992-342L"));
+        assertEquals(true, service.validateControlCharacter(VALID_SSN));
+        assertEquals(false, service.validateControlCharacter(INVALID_SSN));
     }
 }
