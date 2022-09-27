@@ -10,6 +10,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.free.demo.dto.PersonalIdentity;
+import com.free.demo.exception.InvalidSSNException;
 
 @Service
 public class SSNValidateService {
@@ -20,7 +21,7 @@ public class SSNValidateService {
         if (checkInput(personalIdentity.getSsn(), personalIdentity.getCountryCode())) {
             return validate(personalIdentity.getSsn());
         }
-        return false;
+        throw new InvalidSSNException();
     }
 
     /*
