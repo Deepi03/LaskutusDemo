@@ -2,9 +2,11 @@ package com.free.demo.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import com.free.demo.dto.PersonalIdentity;
+import com.free.demo.exception.InvalidSSNException;
 
 public class SSNValidateServiceTest {
     private static String VALID_SSN = "131052-308T";
@@ -17,9 +19,17 @@ public class SSNValidateServiceTest {
 
     @Test
     public void testValidateSSN() {
-        assertEquals(false, service.validateSSN(new PersonalIdentity(VALID_SSN, INVALID_COUNTRY)));
+
         assertEquals(true, service.validateSSN(new PersonalIdentity(VALID_SSN, VALID_COUNTRY)));
-        assertEquals(false, service.validateSSN(new PersonalIdentity(INVALID_SSN, INVALID_COUNTRY)));
+
+    }
+
+    @Test
+    public void shouldThrowException() {
+        Assertions.assertThrows(InvalidSSNException.class, () -> {
+            service.validateSSN(new PersonalIdentity(VALID_SSN, INVALID_COUNTRY));
+        });
+
     }
 
     @Test
@@ -30,7 +40,6 @@ public class SSNValidateServiceTest {
     }
 
     @Test
-
     public void testValidate() {
         assertEquals(false, service.validate(INVALID_SSN));
         assertEquals(true, service.validate(VALID_SSN));
